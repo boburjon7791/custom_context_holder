@@ -10,8 +10,4 @@ import java.util.UUID;
 
 @Service
 public class ReportService extends BaseService<Report,UUID, ReportDto, ReportsRequestModel> {
-    @Override
-    public void deleteById(UUID uuid) {
-        throw new IllegalArgumentException();
-    }
 }

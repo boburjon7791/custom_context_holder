@@ -10,8 +10,4 @@ import java.util.UUID;
 
 @Service
 public class PaymentService extends BaseService<Payment, UUID, PaymentDto, PaymentRequestModel> {
-    @Override
-    public PaymentDto update(PaymentDto paymentDto, UUID uuid) {
-        throw new IllegalArgumentException();
-    }
 }

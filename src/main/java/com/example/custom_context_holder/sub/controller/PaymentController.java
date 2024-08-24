@@ -14,4 +14,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/payment")
 public class PaymentController extends BaseController<Payment, UUID, PaymentDto, PaymentRequestModel> {
+    @Override
+    public PaymentDto update(PaymentDto paymentDto, UUID uuid) {
+        throw new IllegalArgumentException();
+    }
 }
