@@ -13,4 +13,5 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/reports")
-public class ReportController extends BaseController<Report, UUID, ReportDto, ReportsRequestModel> {}
+public class ReportController extends BaseController<Report, UUID, ReportDto, ReportsRequestModel> {
+}

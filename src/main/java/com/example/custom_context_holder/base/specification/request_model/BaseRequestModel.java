@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 
@@ -14,6 +16,6 @@ public class BaseRequestModel {
     private Integer page=0;
     private Integer size=10;
     private String search;
-    private ZonedDateTime fromDate;
-    private ZonedDateTime toDate;
+    private LocalDate fromDate;
+    private LocalDate toDate;
 }

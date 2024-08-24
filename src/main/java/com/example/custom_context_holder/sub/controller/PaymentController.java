@@ -13,4 +13,5 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/payment")
-public class PaymentController extends BaseController<Payment, UUID, PaymentDto, PaymentRequestModel> {}
+public class PaymentController extends BaseController<Payment, UUID, PaymentDto, PaymentRequestModel> {
+}

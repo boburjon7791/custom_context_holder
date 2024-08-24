@@ -8,18 +8,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Component
 public class ReportSpecification implements SpecificationUtils<Report, ReportsRequestModel> {
-
-    public static Specification<Report> fromCreatedAt(LocalDateTime fromCreatedDate){
-        return (root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(root.get(Report._createdAt), fromCreatedDate);
-    }
-
-    public static Specification<Report> toCreatedAt(LocalDateTime toCreatedDate){
-        return (root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get(Report._createdAt), toCreatedDate);
-    }
 
     public static Specification<Report> fromUnitPrice(BigDecimal unitPrice){
         return (root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(root.get(Report._unitPrice), unitPrice);
@@ -46,11 +37,11 @@ public class ReportSpecification implements SpecificationUtils<Report, ReportsRe
         Specification<Report> emptySpecification = Specification.where(null);
 
         if (request.getFromDate()!=null) {
-            emptySpecification=emptySpecification.and(ReportSpecification.fromCreatedAt(TimeZoneContext.convertToDefaultTimeZoneId(request.getFromDate())));
+            emptySpecification=emptySpecification.and(SpecificationUtils.fromCreatedAt(request.getFromDate()));
         }
 
         if (request.getToDate()!=null) {
-            emptySpecification=emptySpecification.and(ReportSpecification.toCreatedAt(TimeZoneContext.convertToDefaultTimeZoneId(request.getToDate())));
+            emptySpecification=emptySpecification.and(SpecificationUtils.toCreatedAt(request.getToDate()));
         }
 
         if (request.getFromUnitPrice()!=null) {

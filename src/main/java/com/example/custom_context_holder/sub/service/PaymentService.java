@@ -9,4 +9,5 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class PaymentService extends BaseService<Payment, UUID, PaymentDto, PaymentRequestModel> {}
+public class PaymentService extends BaseService<Payment, UUID, PaymentDto, PaymentRequestModel> {
+}

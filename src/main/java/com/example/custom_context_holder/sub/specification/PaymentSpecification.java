@@ -17,11 +17,11 @@ public class PaymentSpecification implements SpecificationUtils<Payment, Payment
         Specification<Payment> emptySpecification=Specification.where(null);
 
         if (request.getFromDate()!=null) {
-            emptySpecification=emptySpecification.and(fromCreatedAt(TimeZoneContext.convertToDefaultTimeZoneId(request.getFromDate())));
+            emptySpecification=emptySpecification.and(SpecificationUtils.fromCreatedAt(request.getFromDate()));
         }
 
         if (request.getToDate()!=null){
-            emptySpecification=emptySpecification.and(toCreatedAt(TimeZoneContext.convertToDefaultTimeZoneId(request.getToDate())));
+            emptySpecification=emptySpecification.and(SpecificationUtils.toCreatedAt(request.getToDate()));
         }
 
         if (request.getSuccess()!=null){
@@ -41,14 +41,6 @@ public class PaymentSpecification implements SpecificationUtils<Payment, Payment
         }
 
         return emptySpecification;
-    }
-
-    public static Specification<Payment> fromCreatedAt(LocalDateTime fromCreatedAt){
-        return (root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(root.get(Payment._createdAt), fromCreatedAt);
-    }
-
-    public static Specification<Payment> toCreatedAt(LocalDateTime toCreatedAt){
-        return (root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get(Payment._createdAt), toCreatedAt);
     }
 
     public static Specification<Payment> success(Boolean success){

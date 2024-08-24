@@ -7,11 +7,25 @@ import com.example.custom_context_holder.base.model.mapper.BaseMapper;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 @Mapper(componentModel = "spring")
 public interface ReportMapper extends BaseMapper<Report, ReportDto> {
     @Override
+    default Report toEntity(ReportDto dto){
+        return Report.builder()
+                .totalSumma(dto.getTotalSumma())
+                .orderLastTime(TimeZoneContext.convertToDefaultTimeZoneId(dto.getOrderLastTime()))
+                .productName(dto.getProductName())
+                .quantity(dto.getQuantity())
+                .unitPrice(dto.getUnitPrice())
+                .build();
+    }
+
+    @Override
     default ReportDto toDto(Report report) {
+        LocalDateTime orderLastTime = TimeZoneContext.get(report.getOrderLastTime());
         return ReportDto.builder()
                 .id(report.getId())
                 .createdAt(TimeZoneContext.getZoneId(report.getCreatedAt()))
@@ -19,7 +33,7 @@ public interface ReportMapper extends BaseMapper<Report, ReportDto> {
                 .unitPrice(report.getUnitPrice())
                 .deleted(report.isDeleted())
                 .totalSumma(report.getTotalSumma())
-                .orderLastTime(TimeZoneContext.getZoneId(report.getOrderLastTime()))
+                .orderLastTime(orderLastTime)
                 .productName(report.getProductName())
                 .build();
     }

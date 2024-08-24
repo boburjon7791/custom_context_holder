@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
@@ -35,5 +36,5 @@ public class ReportDto extends BaseDto {
 
         @NotNull
         @Future
-        private ZonedDateTime orderLastTime;
+        private LocalDateTime orderLastTime;
 }

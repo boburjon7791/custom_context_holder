@@ -6,7 +6,7 @@ import java.time.ZonedDateTime;
 
 public class TimeZoneContext {
     public static LocalDateTime get(LocalDateTime localDateTime){
-        return ZonedDateTime.of(localDateTime, TimeZoneContextHolder.get()).toLocalDateTime();
+        return getZoneId(localDateTime).toLocalDateTime();
     }
 
     public static ZonedDateTime getZoneId(LocalDateTime localDateTime){
@@ -15,7 +15,8 @@ public class TimeZoneContext {
     }
 
 
-    public static LocalDateTime convertToDefaultTimeZoneId(ZonedDateTime zonedDateTime){
+    public static LocalDateTime convertToDefaultTimeZoneId(LocalDateTime localDateTime){
+        ZonedDateTime zonedDateTime=ZonedDateTime.of(localDateTime, TimeZoneContextHolder.get());
         return zonedDateTime.withZoneSameInstant(TimeZoneContextHolder.getDefaultTimeZoneId()).toLocalDateTime();
     }
 

@@ -9,4 +9,5 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class ReportService extends BaseService<Report,UUID, ReportDto, ReportsRequestModel> {}
+public class ReportService extends BaseService<Report,UUID, ReportDto, ReportsRequestModel> {
+}
