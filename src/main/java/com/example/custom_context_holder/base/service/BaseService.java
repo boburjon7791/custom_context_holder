@@ -4,7 +4,6 @@ import com.example.custom_context_holder.base.model.entity.BaseEntity;
 import com.example.custom_context_holder.base.model.mapper.BaseMapper;
 import com.example.custom_context_holder.base.repository.BaseRepository;
 import com.example.custom_context_holder.base.specification.SpecificationUtils;
-import com.example.custom_context_holder.sub.model.entity.Report;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
