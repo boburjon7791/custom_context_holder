@@ -1,28 +1,28 @@
 package com.example.custom_context_holder;
 
-import com.example.custom_context_holder.sub.model.dto.PaymentDto;
+import com.example.custom_context_holder.config.time_zone_context.TimeZoneContext;
 import com.example.custom_context_holder.sub.model.dto.ReportDto;
+import com.example.custom_context_holder.sub.model.entity.Report;
+import com.example.custom_context_holder.sub.service.ReportService;
 import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
-import org.springframework.http.MediaType;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
 
 import java.math.BigDecimal;
-import java.time.ZoneId;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
 @EnableJpaAuditing
 @SpringBootApplication
+@RequiredArgsConstructor
 @EnableSpringDataWebSupport(pageSerializationMode = EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO)
 public class CustomContextHolderApplication {
+
+	private final ReportService reportService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CustomContextHolderApplication.class, args);
@@ -31,13 +31,14 @@ public class CustomContextHolderApplication {
 	@PostConstruct
 	public void init(){
 		Runnable runnable=() -> {
-            try {
+            reportService.m2();
+			/*try {
                 TimeUnit.SECONDS.sleep(7);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
-            }
+            }*/
             RestClient restClient= RestClient.builder().build();
-			ZoneId.getAvailableZoneIds().forEach(System.out::println);
+//			ZoneId.getAvailableZoneIds().forEach(System.out::println);
 
 			/*LinkedHashMap body = restClient.get()
 					.uri("http://localhost:8081/api/reports",uriBuilder -> uriBuilder.queryParam("time-zone","Europe/Moscow" ).build())

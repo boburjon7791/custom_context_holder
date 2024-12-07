@@ -8,6 +8,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import java.time.ZoneId;
 
 public class TimeZoneInterceptor implements HandlerInterceptor {
+
     @Override
     public boolean preHandle(@NonNull HttpServletRequest request,
                              @NonNull HttpServletResponse response,

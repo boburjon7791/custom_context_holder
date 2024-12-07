@@ -4,12 +4,14 @@ import com.example.custom_context_holder.base.model.entity.BaseEntity;
 import com.example.custom_context_holder.base.model.mapper.BaseMapper;
 import com.example.custom_context_holder.base.repository.BaseRepository;
 import com.example.custom_context_holder.base.specification.SpecificationUtils;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
+@Getter
 public class BaseService<ENTITY,ID, DTO, REQUEST> {
     private BaseRepository<ENTITY, ID> baseRepository;
     private BaseMapper<ENTITY, DTO> baseMapper;
