@@ -1,6 +1,6 @@
 package com.example.custom_context_holder.sub.model.mapper;
 
-import com.example.custom_context_holder.config.time_zone_context.TimeZoneContext;
+import com.example.custom_context_holder.base.config.time_zone_context.TimeZoneContext;
 import com.example.custom_context_holder.sub.model.dto.ReportDto;
 import com.example.custom_context_holder.sub.model.entity.Report;
 import com.example.custom_context_holder.base.model.mapper.BaseMapper;

@@ -1,8 +1,5 @@
 package com.example.custom_context_holder;
 
-import com.example.custom_context_holder.config.time_zone_context.TimeZoneContext;
-import com.example.custom_context_holder.sub.model.dto.ReportDto;
-import com.example.custom_context_holder.sub.model.entity.Report;
 import com.example.custom_context_holder.sub.service.ReportService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -11,10 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.web.client.RestClient;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.concurrent.TimeUnit;
 
 @EnableJpaAuditing
 @SpringBootApplication

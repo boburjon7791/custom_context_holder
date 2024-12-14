@@ -2,7 +2,7 @@ package com.example.custom_context_holder.base.specification;
 
 import com.example.custom_context_holder.base.model.entity.BaseEntity;
 import com.example.custom_context_holder.base.specification.request_model.BaseRequestModel;
-import com.example.custom_context_holder.config.time_zone_context.TimeZoneContext;
+import com.example.custom_context_holder.base.config.time_zone_context.TimeZoneContext;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

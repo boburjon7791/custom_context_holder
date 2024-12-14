@@ -1,7 +1,6 @@
 package com.example.custom_context_holder.sub.specification;
 
 import com.example.custom_context_holder.base.specification.SpecificationUtils;
-import com.example.custom_context_holder.config.time_zone_context.TimeZoneContext;
 import com.example.custom_context_holder.sub.model.entity.Report;
 import com.example.custom_context_holder.sub.specification.request_params.ReportsRequestModel;
 import org.springframework.data.jpa.domain.Specification;

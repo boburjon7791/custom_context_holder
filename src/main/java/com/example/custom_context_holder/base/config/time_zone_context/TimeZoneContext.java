@@ -1,4 +1,4 @@
-package com.example.custom_context_holder.config.time_zone_context;
+package com.example.custom_context_holder.base.config.time_zone_context;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;

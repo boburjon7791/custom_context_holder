@@ -1,14 +1,12 @@
 package com.example.custom_context_holder.sub.specification;
 
 import com.example.custom_context_holder.base.specification.SpecificationUtils;
-import com.example.custom_context_holder.config.time_zone_context.TimeZoneContext;
 import com.example.custom_context_holder.sub.model.entity.Payment;
 import com.example.custom_context_holder.sub.specification.request_params.PaymentRequestModel;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Component
 public class PaymentSpecification implements SpecificationUtils<Payment, PaymentRequestModel> {
