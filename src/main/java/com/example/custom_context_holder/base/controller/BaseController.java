@@ -1,28 +1,27 @@
 package com.example.custom_context_holder.base.controller;
 
 import com.example.custom_context_holder.base.service.BaseService;
-import lombok.RequiredArgsConstructor;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
-@RequiredArgsConstructor
-public class BaseController<ENTITY, ID, DTO, REQUEST> {
-    private BaseService<ENTITY,ID, DTO, REQUEST> baseService;
+public class BaseController<ENTITY, ID, DTO, FILTERING> {
+    private BaseService<ENTITY,ID, DTO, FILTERING> baseService;
 
     @Autowired
-    public void setBaseService(@Lazy BaseService<ENTITY, ID, DTO, REQUEST> baseService) {
+    public void setBaseService(@Lazy BaseService<ENTITY, ID, DTO, FILTERING> baseService) {
         this.baseService = baseService;
     }
 
     @PostMapping
-    public DTO create(@RequestBody DTO dto){
+    public DTO create(@RequestBody @Valid DTO dto){
         return baseService.create(dto);
     }
 
     @PutMapping("/{id}")
-    public DTO update(@RequestBody DTO dto, @PathVariable ID id){
+    public DTO update(@RequestBody @Valid DTO dto, @PathVariable ID id){
         return baseService.update(dto, id);
     }
 
@@ -32,7 +31,7 @@ public class BaseController<ENTITY, ID, DTO, REQUEST> {
     }
 
     @GetMapping
-    public Page<DTO> findAll(@ModelAttribute REQUEST request){
+    public Page<DTO> findAll(@ModelAttribute FILTERING request){
         return baseService.findAll(request);
     }
 

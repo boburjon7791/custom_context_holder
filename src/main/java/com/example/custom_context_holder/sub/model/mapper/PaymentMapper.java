@@ -13,8 +13,8 @@ public interface PaymentMapper extends BaseMapper<Payment, PaymentDto> {
     @Override
     default Payment toEntity(PaymentDto paymentDto) {
         return Payment.builder()
-                .payment(paymentDto.getPayment())
-                .cashierName(paymentDto.getCashierName())
+                .payment(paymentDto.payment())
+                .cashierName(paymentDto.cashierName())
                 .success(true)
                 .build();
     }
@@ -25,7 +25,6 @@ public interface PaymentMapper extends BaseMapper<Payment, PaymentDto> {
                 .id(payment.getId())
                 .createdAt(TimeZoneContext.getZoneId(payment.getCreatedAt()))
                 .payment(payment.getPayment())
-                .deleted(payment.isDeleted())
                 .success(payment.getSuccess())
                 .cashierName(payment.getCashierName())
                 .build();

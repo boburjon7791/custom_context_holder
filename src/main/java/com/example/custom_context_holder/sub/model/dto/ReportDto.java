@@ -1,8 +1,7 @@
 package com.example.custom_context_holder.sub.model.dto;
 
-import com.example.custom_context_holder.base.model.dto.BaseDto;
 import jakarta.validation.constraints.*;
-import lombok.*;
+import lombok.Builder;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
@@ -10,31 +9,29 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@SuperBuilder
-@ToString
-public class ReportDto extends BaseDto {
-        private UUID id;
+@Builder
+public record ReportDto (
+
+        ZonedDateTime createdAt,
+
+        UUID id,
 
         @NotNull
         @PositiveOrZero
-        private BigDecimal unitPrice;
+        BigDecimal unitPrice,
 
         @NotNull
         @PositiveOrZero
-        private BigDecimal totalSumma;
+        BigDecimal totalSumma,
 
         @NotNull
         @Positive
-        private BigDecimal quantity;
+        BigDecimal quantity,
 
         @NotEmpty
-        private String productName;
+        String productName,
 
         @NotNull
         @Future
-        private LocalDateTime orderLastTime;
-}
+        LocalDateTime orderLastTime
+){}

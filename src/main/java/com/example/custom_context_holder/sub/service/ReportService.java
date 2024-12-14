@@ -4,23 +4,18 @@ import com.example.custom_context_holder.base.service.BaseService;
 import com.example.custom_context_holder.sub.model.dto.ReportDto;
 import com.example.custom_context_holder.sub.model.entity.Report;
 import com.example.custom_context_holder.sub.repository.ReportRepository;
-import com.example.custom_context_holder.sub.specification.request_params.ReportsRequestModel;
+import com.example.custom_context_holder.sub.model.filtering.ReportsRequestFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
-public class ReportService extends BaseService<Report,UUID, ReportDto, ReportsRequestModel> {
+public class ReportService extends BaseService<Report,UUID, ReportDto, ReportsRequestFilter> {
     private final ReportRepository reportRepository;
 
     public void m(){

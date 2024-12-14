@@ -35,7 +35,7 @@ public class BaseEntity {
     private Long createdBy;
 
     @LastModifiedBy
-    @Column(name = "updated_at")
+    @Column(name = "updated_by")
     private Long updatedBy;
 
     @Column(nullable = false, columnDefinition = "number(1) default 0")

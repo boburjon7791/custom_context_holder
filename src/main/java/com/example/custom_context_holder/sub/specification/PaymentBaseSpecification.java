@@ -1,25 +1,25 @@
 package com.example.custom_context_holder.sub.specification;
 
-import com.example.custom_context_holder.base.specification.SpecificationUtils;
+import com.example.custom_context_holder.base.specification.BaseSpecification;
 import com.example.custom_context_holder.sub.model.entity.Payment;
-import com.example.custom_context_holder.sub.specification.request_params.PaymentRequestModel;
+import com.example.custom_context_holder.sub.model.filtering.PaymentRequestFilter;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
 @Component
-public class PaymentSpecification implements SpecificationUtils<Payment, PaymentRequestModel> {
+public class PaymentBaseSpecification implements BaseSpecification<Payment, PaymentRequestFilter> {
     @Override
-    public Specification<Payment> specification(PaymentRequestModel request) {
+    public Specification<Payment> specification(PaymentRequestFilter request) {
         Specification<Payment> emptySpecification=Specification.where(null);
 
         if (request.getFromDate()!=null) {
-            emptySpecification=emptySpecification.and(SpecificationUtils.fromCreatedAt(request.getFromDate()));
+            emptySpecification=emptySpecification.and(BaseSpecification.fromCreatedAt(request.getFromDate()));
         }
 
         if (request.getToDate()!=null){
-            emptySpecification=emptySpecification.and(SpecificationUtils.toCreatedAt(request.getToDate()));
+            emptySpecification=emptySpecification.and(BaseSpecification.toCreatedAt(request.getToDate()));
         }
 
         if (request.getSuccess()!=null){
@@ -46,7 +46,7 @@ public class PaymentSpecification implements SpecificationUtils<Payment, Payment
     }
 
     public static Specification<Payment> containsCashierName(String cashierName){
-        return (root, query, criteriaBuilder) -> criteriaBuilder.like(criteriaBuilder.lower(root.get(Payment._cashierName)), SpecificationUtils.likeExpression(cashierName));
+        return (root, query, criteriaBuilder) -> criteriaBuilder.like(criteriaBuilder.lower(root.get(Payment._cashierName)), BaseSpecification.likeExpression(cashierName));
     }
 
     public static Specification<Payment> fromPayment(BigDecimal fromPayment){

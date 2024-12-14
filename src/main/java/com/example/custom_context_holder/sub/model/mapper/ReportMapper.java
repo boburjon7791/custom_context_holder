@@ -15,11 +15,11 @@ public interface ReportMapper extends BaseMapper<Report, ReportDto> {
     @Override
     default Report toEntity(ReportDto dto){
         return Report.builder()
-                .totalSumma(dto.getTotalSumma())
-                .orderLastTime(TimeZoneContext.convertToDefaultTimeZoneId(dto.getOrderLastTime()))
-                .productName(dto.getProductName())
-                .quantity(dto.getQuantity())
-                .unitPrice(dto.getUnitPrice())
+                .totalSumma(dto.totalSumma())
+                .orderLastTime(TimeZoneContext.convertToDefaultTimeZoneId(dto.orderLastTime()))
+                .productName(dto.productName())
+                .quantity(dto.quantity())
+                .unitPrice(dto.unitPrice())
                 .build();
     }
 
@@ -31,7 +31,6 @@ public interface ReportMapper extends BaseMapper<Report, ReportDto> {
                 .createdAt(TimeZoneContext.getZoneId(report.getCreatedAt()))
                 .quantity(report.getQuantity())
                 .unitPrice(report.getUnitPrice())
-                .deleted(report.isDeleted())
                 .totalSumma(report.getTotalSumma())
                 .orderLastTime(orderLastTime)
                 .productName(report.getProductName())
@@ -40,10 +39,10 @@ public interface ReportMapper extends BaseMapper<Report, ReportDto> {
 
     @Override
     default Report update(Report report, ReportDto dto) {
-            report.setProductName(dto.getProductName());
-            report.setQuantity(dto.getQuantity());
-            report.setUnitPrice(dto.getUnitPrice());
-            report.setOrderLastTime(TimeZoneContext.convertToDefaultTimeZoneId(dto.getOrderLastTime()));
+            report.setProductName(dto.productName());
+            report.setQuantity(dto.quantity());
+            report.setUnitPrice(dto.unitPrice());
+            report.setOrderLastTime(TimeZoneContext.convertToDefaultTimeZoneId(dto.orderLastTime()));
             return report;
     }
 }

@@ -1,7 +1,7 @@
 package com.example.custom_context_holder.base.specification;
 
 import com.example.custom_context_holder.base.model.entity.BaseEntity;
-import com.example.custom_context_holder.base.specification.request_model.BaseRequestModel;
+import com.example.custom_context_holder.base.model.filtering.BaseRequestFilter;
 import com.example.custom_context_holder.base.config.time_zone_context.TimeZoneContext;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-public interface SpecificationUtils<ENTITY, REQUEST> {
+public interface BaseSpecification<ENTITY, REQUEST> {
     Specification<ENTITY> specification(REQUEST request);
 
     static <ENTITY> Specification<ENTITY> fromCreatedAt(LocalDate fromCreatedDate){
@@ -24,7 +24,7 @@ public interface SpecificationUtils<ENTITY, REQUEST> {
     }
 
     default Pageable pageable(REQUEST request) {
-        BaseRequestModel requestModel = (BaseRequestModel)request;
+        BaseRequestFilter requestModel = (BaseRequestFilter)request;
         return PageRequest.of(requestModel.getPage(), requestModel.getSize(), Sort.by(Sort.Direction.DESC, BaseEntity._createdAt));
     }
 

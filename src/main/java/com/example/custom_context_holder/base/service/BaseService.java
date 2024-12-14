@@ -3,7 +3,7 @@ package com.example.custom_context_holder.base.service;
 import com.example.custom_context_holder.base.model.entity.BaseEntity;
 import com.example.custom_context_holder.base.model.mapper.BaseMapper;
 import com.example.custom_context_holder.base.repository.BaseRepository;
-import com.example.custom_context_holder.base.specification.SpecificationUtils;
+import com.example.custom_context_holder.base.specification.BaseSpecification;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -12,10 +12,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
 @Getter
-public class BaseService<ENTITY,ID, DTO, REQUEST> {
+public class BaseService<ENTITY,ID, DTO, FILTERING> {
     private BaseRepository<ENTITY, ID> baseRepository;
     private BaseMapper<ENTITY, DTO> baseMapper;
-    private SpecificationUtils<ENTITY, REQUEST> specificationUtils;
+    private BaseSpecification<ENTITY, FILTERING> baseSpecification;
 
     @Autowired
     public void setBaseRepository(@Lazy BaseRepository<ENTITY, ID> baseRepository) {
@@ -28,8 +28,8 @@ public class BaseService<ENTITY,ID, DTO, REQUEST> {
     }
 
     @Autowired
-    public void setSpecificationUtils(@Lazy SpecificationUtils<ENTITY, REQUEST> specificationUtils) {
-        this.specificationUtils = specificationUtils;
+    public void setBaseSpecification(@Lazy BaseSpecification<ENTITY, FILTERING> baseSpecification) {
+        this.baseSpecification = baseSpecification;
     }
 
     public DTO create(DTO dto){
@@ -44,9 +44,9 @@ public class BaseService<ENTITY,ID, DTO, REQUEST> {
         return baseMapper.toDto(baseRepository.save(baseMapper.update(entity(id), dto)));
     }
 
-    public Page<DTO> findAll(REQUEST request){
-        Specification<ENTITY> specification = specificationUtils.specification(request);
-        Pageable pageable = specificationUtils.pageable(request);
+    public Page<DTO> findAll(FILTERING request){
+        Specification<ENTITY> specification = baseSpecification.specification(request);
+        Pageable pageable = baseSpecification.pageable(request);
         return baseRepository.findAll(specification, pageable)
                 .map(baseMapper::toDto);
     }

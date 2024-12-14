@@ -1,6 +1,6 @@
-package com.example.custom_context_holder.sub.specification.request_params;
+package com.example.custom_context_holder.sub.model.filtering;
 
-import com.example.custom_context_holder.base.specification.request_model.BaseRequestModel;
+import com.example.custom_context_holder.base.model.filtering.BaseRequestFilter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PaymentRequestModel extends BaseRequestModel {
+public class PaymentRequestFilter extends BaseRequestFilter {
     private Boolean success;
     private BigDecimal fromPayment;
     private BigDecimal toPayment;

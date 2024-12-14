@@ -8,12 +8,3 @@ import lombok.experimental.SuperBuilder;
 
 import java.time.ZonedDateTime;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@SuperBuilder
-public class BaseDto {
-    private Boolean deleted;
-    private ZonedDateTime createdAt;
-}

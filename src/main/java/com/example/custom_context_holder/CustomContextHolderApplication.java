@@ -1,10 +1,19 @@
 package com.example.custom_context_holder;
 
 import com.example.custom_context_holder.sub.service.ReportService;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.servers.Server;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.web.client.RestClient;
@@ -12,6 +21,7 @@ import org.springframework.web.client.RestClient;
 @EnableJpaAuditing
 @SpringBootApplication
 @RequiredArgsConstructor
+@OpenAPIDefinition(servers = {@Server(url = "/", description = "Default Server Url")})
 @EnableSpringDataWebSupport(pageSerializationMode = EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO)
 public class CustomContextHolderApplication {
 
@@ -24,7 +34,7 @@ public class CustomContextHolderApplication {
 	@PostConstruct
 	public void init(){
 		Runnable runnable=() -> {
-            reportService.m2();
+//            reportService.m2();
 			/*try {
                 TimeUnit.SECONDS.sleep(7);
             } catch (InterruptedException e) {
@@ -88,5 +98,15 @@ public class CustomContextHolderApplication {
 			object1.forEach(System.out::println);*/
 		};
 		new Thread(runnable).start();
+	}
+
+	@Bean
+	public OpenAPI openAPI() {
+		return new OpenAPI().info(new Info().title("My REST API")
+						.description("Some custom description of API.")
+						.version("1.0").contact(new Contact().name("Soliyev Boburjon")
+								.email("http://localhost:8080").url("soliyevboburjon95@@gmail.com"))
+						.license(new License().name("License of API")
+								.url("API license URL")));
 	}
 }
