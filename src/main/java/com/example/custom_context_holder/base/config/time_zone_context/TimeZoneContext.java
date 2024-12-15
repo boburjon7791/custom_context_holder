@@ -1,12 +1,14 @@
 package com.example.custom_context_holder.base.config.time_zone_context;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 
 public class TimeZoneContext {
     public static LocalDateTime get(LocalDateTime localDateTime){
         return getZoneId(localDateTime).toLocalDateTime();
+    }
+
+    public static LocalDate get(LocalDate localDate){
+        return getZoneId(LocalDateTime.of(localDate, LocalTime.MIN)).toLocalDate();
     }
 
     public static ZonedDateTime getZoneId(LocalDateTime localDateTime){

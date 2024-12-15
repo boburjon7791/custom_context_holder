@@ -1,6 +1,11 @@
 package com.example.custom_context_holder.base.service;
 
+import com.example.custom_context_holder.base.config.internationalization.Localization;
+import com.example.custom_context_holder.base.exception.ApiException;
+import com.example.custom_context_holder.base.model.dto.ApiResponse;
+import com.example.custom_context_holder.base.model.dto.ResponseCodes;
 import com.example.custom_context_holder.base.model.entity.BaseEntity;
+import com.example.custom_context_holder.base.model.filtering.BaseRequestFilter;
 import com.example.custom_context_holder.base.model.mapper.BaseMapper;
 import com.example.custom_context_holder.base.repository.BaseRepository;
 import com.example.custom_context_holder.base.specification.BaseSpecification;
@@ -11,11 +16,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.util.List;
+
 @Getter
-public class BaseService<ENTITY,ID, DTO, FILTERING> {
+public abstract class BaseService<ENTITY,ID, REQUEST_DTO, RESPONSE_DTO, FILTERING> {
     private BaseRepository<ENTITY, ID> baseRepository;
-    private BaseMapper<ENTITY, DTO> baseMapper;
+    private BaseMapper<ENTITY, REQUEST_DTO, RESPONSE_DTO> baseMapper;
     private BaseSpecification<ENTITY, FILTERING> baseSpecification;
+    private Localization localization;
+
+    @Autowired
+    public void setLocalization(@Lazy Localization localization) {
+        this.localization = localization;
+    }
 
     @Autowired
     public void setBaseRepository(@Lazy BaseRepository<ENTITY, ID> baseRepository) {
@@ -23,7 +36,7 @@ public class BaseService<ENTITY,ID, DTO, FILTERING> {
     }
 
     @Autowired
-    public void setBaseMapper(@Lazy BaseMapper<ENTITY, DTO> baseMapper) {
+    public void setBaseMapper(@Lazy BaseMapper<ENTITY, REQUEST_DTO, RESPONSE_DTO> baseMapper) {
         this.baseMapper = baseMapper;
     }
 
@@ -32,31 +45,50 @@ public class BaseService<ENTITY,ID, DTO, FILTERING> {
         this.baseSpecification = baseSpecification;
     }
 
-    public DTO create(DTO dto){
-        return baseMapper.toDto(baseRepository.save(baseMapper.toEntity(dto)));
+    public abstract String getEntityName();
+
+    public RESPONSE_DTO create(REQUEST_DTO dto){
+        return baseMapper.toDTO(baseRepository.save(baseMapper.toEntity(dto)));
     }
 
-    public DTO findById(ID id){
-        return baseMapper.toDto(entity(id));
+    public RESPONSE_DTO findById(ID id){
+        return baseMapper.toDTO(entity(id));
     }
 
-    public DTO update(DTO dto, ID id){
-        return baseMapper.toDto(baseRepository.save(baseMapper.update(entity(id), dto)));
+    public RESPONSE_DTO update(REQUEST_DTO dto, ID id){
+        ENTITY entity = entity(id);
+        baseMapper.update(entity, dto);
+        ENTITY saved = baseRepository.save(entity);
+        return baseMapper.toDTO(saved);
     }
 
-    public Page<DTO> findAll(FILTERING request){
-        Specification<ENTITY> specification = baseSpecification.specification(request);
-        Pageable pageable = baseSpecification.pageable(request);
-        return baseRepository.findAll(specification, pageable)
-                .map(baseMapper::toDto);
+    public ApiResponse<List<RESPONSE_DTO>> findAll(FILTERING request){
+        if(request instanceof BaseRequestFilter requestFilter){
+            if (requestFilter.isAll()) {
+                List<RESPONSE_DTO> responseDTOList = baseRepository.findAll(requestFilter.sort()).stream().map(baseMapper::toDTO).toList();
+                return ApiResponse.ok(responseDTOList);
+            }
+            Pageable pageable = requestFilter.pageable();
+            Specification<ENTITY> specification = baseSpecification.specification(request);
+            Page<RESPONSE_DTO> page = baseRepository.findAll(specification, pageable)
+                    .map(baseMapper::toDTO);
+            return ApiResponse.ok(page);
+        }
+        throw new ApiException(ResponseCodes.SERVER_ERROR);
     }
 
     public void deleteById(ID id){
-        baseRepository.deleteById(id);
+        ENTITY entity = entity(id);
+        if (entity instanceof BaseEntity baseEntity) {
+            baseEntity.setDeleted(true);
+            baseRepository.save(entity);
+            return;
+        }
+        throw new ApiException(ResponseCodes.SERVER_ERROR);
     }
 
     public ENTITY entity(ID id){
         return baseRepository.findById(id)
-                        .orElseThrow(() -> new RuntimeException(BaseEntity.class.getName()+" not found"));
+                        .orElseThrow(() -> new ApiException(getEntityName()+" not found", ResponseCodes.NOT_FOUND));
     }
 }

@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
@@ -22,7 +23,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @SuperBuilder
 @Table(name = "reports")
-@EntityListeners(AuditingEntityListener.class)
+@Where(clause = "deleted=false")
 public class Report extends BaseEntityUUID {
     @Column(nullable = false, name = "unit_price")
     private BigDecimal unitPrice;
@@ -42,6 +43,7 @@ public class Report extends BaseEntityUUID {
     public static final String _id="id";
     public static final String _createdAt="createdAt";
     public static final String _unitPrice="unitPrice";
+    public static final String _report="report";
     public static final String _totalSumma="totalSumma";
     public static final String _productName="productName";
     public static final String _quantity="quantity";

@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
@@ -21,7 +22,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @SuperBuilder
 @Table(name = "payment")
-@EntityListeners(AuditingEntityListener.class)
+@Where(clause = "deleted=false")
 public class Payment extends BaseEntityUUID {
     @Column(nullable = false)
     private BigDecimal payment;

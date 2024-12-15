@@ -1,7 +1,8 @@
 package com.example.custom_context_holder.sub.model.mapper;
 
 import com.example.custom_context_holder.base.config.time_zone_context.TimeZoneContext;
-import com.example.custom_context_holder.sub.model.dto.PaymentDto;
+import com.example.custom_context_holder.sub.model.dto.request.PaymentRequestDTO;
+import com.example.custom_context_holder.sub.model.dto.response.PaymentResponseDTO;
 import com.example.custom_context_holder.sub.model.entity.Payment;
 import com.example.custom_context_holder.base.model.mapper.BaseMapper;
 import org.mapstruct.Mapper;
@@ -9,9 +10,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Mapper(componentModel = "spring")
-public interface PaymentMapper extends BaseMapper<Payment, PaymentDto> {
+public interface PaymentMapper extends BaseMapper<Payment, PaymentRequestDTO, PaymentResponseDTO> {
     @Override
-    default Payment toEntity(PaymentDto paymentDto) {
+    default Payment toEntity(PaymentRequestDTO paymentDto) {
         return Payment.builder()
                 .payment(paymentDto.payment())
                 .cashierName(paymentDto.cashierName())
@@ -20,8 +21,8 @@ public interface PaymentMapper extends BaseMapper<Payment, PaymentDto> {
     }
 
     @Override
-    default PaymentDto toDto(Payment payment) {
-        return PaymentDto.builder()
+    default PaymentResponseDTO toDTO(Payment payment) {
+        return PaymentResponseDTO.builder()
                 .id(payment.getId())
                 .createdAt(TimeZoneContext.getZoneId(payment.getCreatedAt()))
                 .payment(payment.getPayment())
@@ -31,7 +32,7 @@ public interface PaymentMapper extends BaseMapper<Payment, PaymentDto> {
     }
 
     @Override
-    default Payment update(Payment payment, PaymentDto paymentDto) {
+    default void update(Payment payment, PaymentRequestDTO requestDTO) {
         throw new RuntimeException("payment can not update");
     }
 }

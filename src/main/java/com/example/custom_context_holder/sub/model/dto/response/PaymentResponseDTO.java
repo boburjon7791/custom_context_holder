@@ -1,4 +1,4 @@
-package com.example.custom_context_holder.sub.model.dto;
+package com.example.custom_context_holder.sub.model.dto.response;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -10,7 +10,7 @@ import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Builder
-public record PaymentDto (
+public record PaymentResponseDTO(
 
     UUID id,
 

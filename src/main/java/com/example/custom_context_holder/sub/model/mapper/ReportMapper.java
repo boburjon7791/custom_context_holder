@@ -1,7 +1,8 @@
 package com.example.custom_context_holder.sub.model.mapper;
 
 import com.example.custom_context_holder.base.config.time_zone_context.TimeZoneContext;
-import com.example.custom_context_holder.sub.model.dto.ReportDto;
+import com.example.custom_context_holder.sub.model.dto.request.ReportRequestDTO;
+import com.example.custom_context_holder.sub.model.dto.response.ReportResponseDTO;
 import com.example.custom_context_holder.sub.model.entity.Report;
 import com.example.custom_context_holder.base.model.mapper.BaseMapper;
 import org.mapstruct.Mapper;
@@ -11,9 +12,9 @@ import java.time.LocalDateTime;
 
 @Component
 @Mapper(componentModel = "spring")
-public interface ReportMapper extends BaseMapper<Report, ReportDto> {
+public interface ReportMapper extends BaseMapper<Report, ReportRequestDTO, ReportResponseDTO> {
     @Override
-    default Report toEntity(ReportDto dto){
+    default Report toEntity(ReportRequestDTO dto){
         return Report.builder()
                 .totalSumma(dto.totalSumma())
                 .orderLastTime(TimeZoneContext.convertToDefaultTimeZoneId(dto.orderLastTime()))
@@ -24,9 +25,9 @@ public interface ReportMapper extends BaseMapper<Report, ReportDto> {
     }
 
     @Override
-    default ReportDto toDto(Report report) {
+    default ReportResponseDTO toDTO(Report report) {
         LocalDateTime orderLastTime = TimeZoneContext.get(report.getOrderLastTime());
-        return ReportDto.builder()
+        return ReportResponseDTO.builder()
                 .id(report.getId())
                 .createdAt(TimeZoneContext.getZoneId(report.getCreatedAt()))
                 .quantity(report.getQuantity())
@@ -38,11 +39,10 @@ public interface ReportMapper extends BaseMapper<Report, ReportDto> {
     }
 
     @Override
-    default Report update(Report report, ReportDto dto) {
+    default void update(Report report, ReportRequestDTO dto) {
             report.setProductName(dto.productName());
             report.setQuantity(dto.quantity());
             report.setUnitPrice(dto.unitPrice());
             report.setOrderLastTime(TimeZoneContext.convertToDefaultTimeZoneId(dto.orderLastTime()));
-            return report;
     }
 }

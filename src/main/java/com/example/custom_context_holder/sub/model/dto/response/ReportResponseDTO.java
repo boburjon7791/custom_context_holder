@@ -1,8 +1,7 @@
-package com.example.custom_context_holder.sub.model.dto;
+package com.example.custom_context_holder.sub.model.dto.response;
 
 import jakarta.validation.constraints.*;
 import lombok.Builder;
-import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -10,7 +9,7 @@ import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Builder
-public record ReportDto (
+public record ReportResponseDTO(
 
         ZonedDateTime createdAt,
 

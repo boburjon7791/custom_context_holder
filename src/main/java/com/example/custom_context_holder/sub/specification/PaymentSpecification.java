@@ -9,17 +9,17 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 
 @Component
-public class PaymentBaseSpecification implements BaseSpecification<Payment, PaymentRequestFilter> {
+public class PaymentSpecification implements BaseSpecification<Payment, PaymentRequestFilter> {
     @Override
     public Specification<Payment> specification(PaymentRequestFilter request) {
         Specification<Payment> emptySpecification=Specification.where(null);
 
         if (request.getFromDate()!=null) {
-            emptySpecification=emptySpecification.and(BaseSpecification.fromCreatedAt(request.getFromDate()));
+            emptySpecification=emptySpecification.and(fromCreatedAt(request.getFromDate()));
         }
 
         if (request.getToDate()!=null){
-            emptySpecification=emptySpecification.and(BaseSpecification.toCreatedAt(request.getToDate()));
+            emptySpecification=emptySpecification.and(toCreatedAt(request.getToDate()));
         }
 
         if (request.getSuccess()!=null){
@@ -41,19 +41,19 @@ public class PaymentBaseSpecification implements BaseSpecification<Payment, Paym
         return emptySpecification;
     }
 
-    public static Specification<Payment> success(Boolean success){
+    public Specification<Payment> success(Boolean success){
         return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get(Payment._success), success);
     }
 
-    public static Specification<Payment> containsCashierName(String cashierName){
-        return (root, query, criteriaBuilder) -> criteriaBuilder.like(criteriaBuilder.lower(root.get(Payment._cashierName)), BaseSpecification.likeExpression(cashierName));
+    public Specification<Payment> containsCashierName(String cashierName){
+        return (root, query, criteriaBuilder) -> criteriaBuilder.like(criteriaBuilder.lower(root.get(Payment._cashierName)), likeExpression(cashierName));
     }
 
-    public static Specification<Payment> fromPayment(BigDecimal fromPayment){
+    public Specification<Payment> fromPayment(BigDecimal fromPayment){
         return (root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(root.get(Payment._payment), fromPayment);
     }
 
-    public static Specification<Payment> toPayment(BigDecimal toPayment){
+    public Specification<Payment> toPayment(BigDecimal toPayment){
         return (root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get(Payment._payment), toPayment);
     }
 }
