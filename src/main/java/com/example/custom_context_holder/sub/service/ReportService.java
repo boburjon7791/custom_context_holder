@@ -15,4 +15,14 @@ public class ReportService extends BaseService<Report,UUID, ReportRequestDTO, Re
     public String getEntityName() {
         return Report._report;
     }
+
+    @Override
+    public void checkCreating(ReportRequestDTO reportRequestDTO) {
+
+    }
+
+    @Override
+    public void checkUpdating(ReportRequestDTO reportRequestDTO, UUID uuid) {
+
+    }
 }

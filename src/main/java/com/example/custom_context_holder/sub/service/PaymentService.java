@@ -15,4 +15,14 @@ public class PaymentService extends BaseService<Payment, UUID, PaymentRequestDTO
     public String getEntityName() {
         return Payment._payment;
     }
+
+    @Override
+    public void checkCreating(PaymentRequestDTO requestDTO) {
+
+    }
+
+    @Override
+    public void checkUpdating(PaymentRequestDTO requestDTO, UUID uuid) {
+
+    }
 }
