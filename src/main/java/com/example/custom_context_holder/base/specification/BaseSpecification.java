@@ -8,13 +8,16 @@ import java.sql.Date;
 import java.time.LocalDate;
 
 
+/*
+* fromCreatedAt and toCreatedAt functions has bug for oracle database
+* */
 public interface BaseSpecification<ENTITY, REQUEST> {
     String toDateFunction="cast";
     Specification<ENTITY> specification(REQUEST request);
 
     default Specification<ENTITY> fromCreatedAt(LocalDate fromCreatedDate){
         return (root, query, criteriaBuilder) -> {
-            Expression<Date> castedDate = criteriaBuilder.function(toDateFunction, Date.class, root.get(BaseEntity._createdAt));
+            Expression<Date> castedDate = criteriaBuilder.function(toDateFunction, Date.class, root.get(BaseEntity._createdAt), root.as(Date.class));
             Expression<Date> createdDate = criteriaBuilder.literal(Date.valueOf(fromCreatedDate));
             return criteriaBuilder.greaterThanOrEqualTo(castedDate, createdDate);
         };
@@ -22,7 +25,7 @@ public interface BaseSpecification<ENTITY, REQUEST> {
 
     default Specification<ENTITY> toCreatedAt(LocalDate toCreatedDate){
         return (root, query, criteriaBuilder) -> {
-            Expression<Date> castedDate = criteriaBuilder.function(toDateFunction, Date.class, root.get(BaseEntity._createdAt));
+            Expression<Date> castedDate = criteriaBuilder.function(toDateFunction, Date.class, root.get(BaseEntity._createdAt), root.as(Date.class));
             Expression<Date> createdDate = criteriaBuilder.literal(Date.valueOf(toCreatedDate));
             return criteriaBuilder.lessThanOrEqualTo(castedDate, createdDate);
         };
