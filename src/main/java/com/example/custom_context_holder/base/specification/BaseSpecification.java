@@ -1,5 +1,6 @@
 package com.example.custom_context_holder.base.specification;
 
+import com.example.custom_context_holder.base.config.time_zone_context.TimeZoneContext;
 import com.example.custom_context_holder.base.model.entity.BaseEntity;
 import jakarta.persistence.criteria.Expression;
 import org.springframework.data.jpa.domain.Specification;
@@ -18,7 +19,7 @@ public interface BaseSpecification<ENTITY, REQUEST> {
     default Specification<ENTITY> fromCreatedAt(LocalDate fromCreatedDate){
         return (root, query, criteriaBuilder) -> {
             Expression<Date> castedDate = criteriaBuilder.function(toDateFunction, Date.class, root.get(BaseEntity._createdAt), root.as(Date.class));
-            Expression<Date> createdDate = criteriaBuilder.literal(Date.valueOf(fromCreatedDate));
+            Expression<Date> createdDate = criteriaBuilder.literal(Date.valueOf(TimeZoneContext.get(fromCreatedDate)));
             return criteriaBuilder.greaterThanOrEqualTo(castedDate, createdDate);
         };
     }
@@ -26,7 +27,7 @@ public interface BaseSpecification<ENTITY, REQUEST> {
     default Specification<ENTITY> toCreatedAt(LocalDate toCreatedDate){
         return (root, query, criteriaBuilder) -> {
             Expression<Date> castedDate = criteriaBuilder.function(toDateFunction, Date.class, root.get(BaseEntity._createdAt), root.as(Date.class));
-            Expression<Date> createdDate = criteriaBuilder.literal(Date.valueOf(toCreatedDate));
+            Expression<Date> createdDate = criteriaBuilder.literal(Date.valueOf(TimeZoneContext.get(toCreatedDate)));
             return criteriaBuilder.lessThanOrEqualTo(castedDate, createdDate);
         };
     }
