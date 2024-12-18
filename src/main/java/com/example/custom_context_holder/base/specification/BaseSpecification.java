@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 
 /*
-* We need to compile for working fromCreatedAt and toCreatedAt functions in oracle database.
+* We need to create the following function for working fromCreatedAt and toCreatedAt functions in oracle database.
 * If you use postgresql database, you don't need to create any sql function.
 
     create or replace function timestamp_to_date(date_time timestamp)
