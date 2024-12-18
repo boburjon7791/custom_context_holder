@@ -10,26 +10,28 @@ import java.time.LocalDate;
 
 
 /*
-* fromCreatedAt and toCreatedAt functions has bug for oracle database
+* We need to compile for working fromCreatedAt and toCreatedAt functions in oracle database.
+* If you use postgresql database, you don't need to create any sql function.
+
+    create or replace function timestamp_to_date(date_time timestamp)
+        return date
+    is
+    begin
+        return cast(date_time as date);
+    end;
+
 * */
 public interface BaseSpecification<ENTITY, REQUEST> {
-    String toDateFunction="cast";
+//    String toDateFunction="date"; // this is for postgresql database
+    String toDateFunction="timestamp_to_date";
     Specification<ENTITY> specification(REQUEST request);
 
     default Specification<ENTITY> fromCreatedAt(LocalDate fromCreatedDate){
-        return (root, query, criteriaBuilder) -> {
-            Expression<Date> castedDate = criteriaBuilder.function(toDateFunction, Date.class, root.get(BaseEntity._createdAt), root.as(Date.class));
-            Expression<Date> createdDate = criteriaBuilder.literal(Date.valueOf(TimeZoneContext.get(fromCreatedDate)));
-            return criteriaBuilder.greaterThanOrEqualTo(castedDate, createdDate);
-        };
+        return (root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(criteriaBuilder.function(toDateFunction, LocalDate.class, root.get(BaseEntity._createdAt)), fromCreatedDate);
     }
 
     default Specification<ENTITY> toCreatedAt(LocalDate toCreatedDate){
-        return (root, query, criteriaBuilder) -> {
-            Expression<Date> castedDate = criteriaBuilder.function(toDateFunction, Date.class, root.get(BaseEntity._createdAt), root.as(Date.class));
-            Expression<Date> createdDate = criteriaBuilder.literal(Date.valueOf(TimeZoneContext.get(toCreatedDate)));
-            return criteriaBuilder.lessThanOrEqualTo(castedDate, createdDate);
-        };
+        return (root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(criteriaBuilder.function(toDateFunction, LocalDate.class, root.get(BaseEntity._createdAt)), toCreatedDate);
     }
 
     default String likeExpression(String text){
