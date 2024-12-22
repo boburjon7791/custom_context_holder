@@ -19,7 +19,7 @@ import org.springframework.data.jpa.domain.Specification;
 import java.util.List;
 
 @Getter
-public abstract class BaseService<ENTITY,ID, REQUEST_DTO, RESPONSE_DTO, FILTERING> {
+public abstract class BaseService<ENTITY extends BaseEntity<ID>, ID, REQUEST_DTO, RESPONSE_DTO, FILTERING extends BaseRequestFilter> {
     private BaseRepository<ENTITY, ID> baseRepository;
     private BaseMapper<ENTITY, REQUEST_DTO, RESPONSE_DTO> baseMapper;
     private BaseSpecification<ENTITY, FILTERING> baseSpecification;
@@ -67,28 +67,21 @@ public abstract class BaseService<ENTITY,ID, REQUEST_DTO, RESPONSE_DTO, FILTERIN
     }
 
     public ApiResponse<List<RESPONSE_DTO>> findAll(FILTERING request){
-        if(request instanceof BaseRequestFilter requestFilter){
-            if (requestFilter.isAll()) {
-                List<RESPONSE_DTO> responseDTOList = baseRepository.findAll(requestFilter.sort()).stream().map(baseMapper::toDTO).toList();
-                return ApiResponse.ok(responseDTOList);
-            }
-            Pageable pageable = requestFilter.pageable();
-            Specification<ENTITY> specification = baseSpecification.specification(request);
-            Page<RESPONSE_DTO> page = baseRepository.findAll(specification, pageable)
-                    .map(baseMapper::toDTO);
-            return ApiResponse.ok(page);
+        if (request.isAll()) {
+            List<RESPONSE_DTO> responseDTOList = baseRepository.findAll(request.sort()).stream().map(baseMapper::toDTO).toList();
+            return ApiResponse.ok(responseDTOList);
         }
-        throw new ApiException(ResponseCodes.SERVER_ERROR);
+        Pageable pageable = request.pageable();
+        Specification<ENTITY> specification = baseSpecification.specification(request);
+        Page<RESPONSE_DTO> page = baseRepository.findAll(specification, pageable)
+                                                .map(baseMapper::toDTO);
+        return ApiResponse.ok(page);
     }
 
     public void deleteById(ID id){
         ENTITY entity = entity(id);
-        if (entity instanceof BaseEntity baseEntity) {
-            baseEntity.setDeleted(true);
-            baseRepository.save(entity);
-            return;
-        }
-        throw new ApiException(ResponseCodes.SERVER_ERROR);
+        entity.setDeleted(true);
+        baseRepository.save(entity);
     }
 
     public ENTITY entity(ID id){

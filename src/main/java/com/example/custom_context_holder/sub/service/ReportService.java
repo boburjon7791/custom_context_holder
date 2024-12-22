@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class ReportService extends BaseService<Report,UUID, ReportRequestDTO, ReportResponseDTO, ReportsRequestFilter> {
+public class ReportService extends BaseService<Report, UUID, ReportRequestDTO, ReportResponseDTO, ReportsRequestFilter> {
     @Override
     public String getEntityName() {
         return Report._report;

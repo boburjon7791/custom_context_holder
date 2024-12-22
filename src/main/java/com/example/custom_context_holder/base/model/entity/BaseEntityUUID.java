@@ -18,7 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class BaseEntityUUID extends BaseEntity{
+public class BaseEntityUUID extends BaseEntity<UUID>{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;

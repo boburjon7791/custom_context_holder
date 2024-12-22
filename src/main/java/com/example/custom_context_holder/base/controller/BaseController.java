@@ -1,6 +1,8 @@
 package com.example.custom_context_holder.base.controller;
 
 import com.example.custom_context_holder.base.model.dto.ApiResponse;
+import com.example.custom_context_holder.base.model.entity.BaseEntity;
+import com.example.custom_context_holder.base.model.filtering.BaseRequestFilter;
 import com.example.custom_context_holder.base.service.BaseService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-public class BaseController<ENTITY, ID, REQUEST_DTO, RESPONSE_DTO, FILTERING> {
-    private BaseService<ENTITY,ID, REQUEST_DTO, RESPONSE_DTO, FILTERING> baseService;
+public class BaseController<ENTITY extends BaseEntity<ID>, ID, REQUEST_DTO, RESPONSE_DTO, FILTERING extends BaseRequestFilter> {
+    private BaseService<ENTITY, ID, REQUEST_DTO, RESPONSE_DTO, FILTERING> baseService;
 
     @Autowired
     public void setBaseService(@Lazy BaseService<ENTITY, ID, REQUEST_DTO, RESPONSE_DTO, FILTERING> baseService) {

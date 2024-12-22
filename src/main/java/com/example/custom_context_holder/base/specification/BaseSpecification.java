@@ -2,6 +2,7 @@ package com.example.custom_context_holder.base.specification;
 
 import com.example.custom_context_holder.base.config.time_zone_context.TimeZoneContext;
 import com.example.custom_context_holder.base.model.entity.BaseEntity;
+import com.example.custom_context_holder.base.model.filtering.BaseRequestFilter;
 import jakarta.persistence.criteria.Expression;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -21,7 +22,7 @@ import java.time.LocalDate;
     end;
 
 * */
-public interface BaseSpecification<ENTITY, REQUEST> {
+public interface BaseSpecification<ENTITY extends BaseEntity<?>, REQUEST extends BaseRequestFilter> {
 //    String toDateFunction="date"; // this is for postgresql database
     String toDateFunction="timestamp_to_date";
     Specification<ENTITY> specification(REQUEST request);

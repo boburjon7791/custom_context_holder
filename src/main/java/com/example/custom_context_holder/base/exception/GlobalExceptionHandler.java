@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiResponse<?> handle(MethodArgumentNotValidException e){
+    public ApiResponse<Object> handle(MethodArgumentNotValidException e){
         log.warn("Handle exception : {0}",e);
         return ApiResponse.error(e.toString(), ResponseCodes.VALIDATION_ERROR);
     }

@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @SuperBuilder
 @EntityListeners(AuditingEntityListener.class)
-public class BaseEntity {
+public abstract class BaseEntity<ID> {
     @CreatedDate
     @Column(nullable = false, name = "created_at")
     private LocalDateTime createdAt;
@@ -43,4 +43,6 @@ public class BaseEntity {
 
     public static final String _id="id";
     public static final String _createdAt="createdAt";
+
+    public abstract ID getId();
 }
